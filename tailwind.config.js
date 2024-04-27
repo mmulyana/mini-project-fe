@@ -20,6 +20,9 @@ export default {
         secondary: '#1D1F20',
         success: '#43936C',
       },
+      fontFamily: {
+        'nunito-sans': ['Nunito Sans', 'sans-serif'],
+      },
     },
   },
   plugins: [],
