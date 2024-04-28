@@ -14,6 +14,7 @@ import { updateItem } from '../../../services/task'
 import { useModal } from '../../../hooks/use-modal'
 import AddItemModal from '../modal/add-item-modal'
 import { useState } from 'react'
+import EditItemModal from '../modal/edit-item-modal'
 
 interface GroupI {
   id: UniqueIdentifier
@@ -25,7 +26,11 @@ type VariantColor = 1 | 2 | 3 | 4
 
 export function Kanban() {
   const { show, toggle } = useModal()
+  const { show: showEdit, toggle: toggleEdit } = useModal()
+
   const [activeId, setActiveId] = useState<UniqueIdentifier>(0)
+  const [activeGroupId, setActiveGroupId] = useState<UniqueIdentifier>(0)
+
   const queryCache = useQueryClient()
   const { data } = useQuery<GroupI[]>({
     queryKey: ['groups'],
@@ -70,12 +75,15 @@ export function Kanban() {
                 variant={i >= 4 ? 1 : ((i + 1) as VariantColor)}
                 toggle={toggle}
                 setActiveId={setActiveId}
+                setActiveGroupId={setActiveGroupId}
+                toggleEdit={toggleEdit}
               />
             )
           })}
         </div>
       </DndContext>
       <AddItemModal isOpen={show} toggle={toggle} id={activeId} />
+      <EditItemModal isOpen={showEdit} toggle={toggleEdit} groupId={activeGroupId} id={activeId}/>
     </>
   )
 }

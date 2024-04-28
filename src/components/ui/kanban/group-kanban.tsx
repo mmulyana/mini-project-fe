@@ -5,24 +5,7 @@ import { SortableContext, useSortable } from '@dnd-kit/sortable'
 import { useQuery } from 'react-query'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { ItemKanban } from './items-kanban'
-
-const getGroup = async (id: UniqueIdentifier) => {
-  const response = await fetch(
-    `https://todo-api-18-140-52-65.rakamin.com/todos/${id}/items`,
-    {
-      headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1NTUsImV4cCI6MTcyMjg4NDk0Nn0.qbzETtVoPsE3SDY4yUMkgGyE4ED71B9fNsVy6n20rjQ`,
-      },
-    }
-  )
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch data')
-  }
-
-  const data = await response.json()
-  return data
-}
+import { getTask } from '../../../services/task'
 
 export type GroupsProps = {
   id: UniqueIdentifier
@@ -30,8 +13,11 @@ export type GroupsProps = {
   description: string
   variant: 1 | 2 | 3 | 4
   toggle: () => void
+  toggleEdit: () => void
   setActiveId: (val: UniqueIdentifier) => void
+  setActiveGroupId: (val: UniqueIdentifier) => void
 }
+
 export type ItemProps = {
   id: number
   name: string
@@ -41,7 +27,7 @@ export type ItemProps = {
 }
 export function GroupsKanban(props: GroupsProps) {
   const { data } = useQuery<ItemProps[]>(['items', props.id], {
-    queryFn: () => getGroup(props.id),
+    queryFn: () => getTask(props.id),
   })
 
   const { attributes, setNodeRef } = useSortable({
@@ -75,7 +61,13 @@ export function GroupsKanban(props: GroupsProps) {
       </p>
       <SortableContext items={data?.map((d) => d.id) ?? []}>
         {data?.map((d) => (
-          <ItemKanban key={d.id} {...d} />
+          <ItemKanban
+            key={d.id}
+            {...d}
+            setActiveId={props.setActiveId}
+            setActiveGroupId={props.setActiveGroupId}
+            toggleEdit={props.toggleEdit}
+          />
         ))}
       </SortableContext>
       <Button

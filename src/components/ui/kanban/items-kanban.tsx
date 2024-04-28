@@ -2,6 +2,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import ProgressCount from '../progress-count'
 import Settings from '../settings'
 import { CSS } from '@dnd-kit/utilities'
+import { UniqueIdentifier } from '@dnd-kit/core'
 
 export type ItemProps = {
   id: number
@@ -9,6 +10,9 @@ export type ItemProps = {
   done: null | boolean
   todo_id: number
   progress_percentage: number | null
+  toggleEdit: () => void
+  setActiveId: (val: UniqueIdentifier) => void
+  setActiveGroupId: (val: UniqueIdentifier) => void
 }
 export function ItemKanban(props: ItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -23,6 +27,9 @@ export function ItemKanban(props: ItemProps) {
         },
       },
     })
+
+  const handleEdit = () => props.setActiveGroupId(props.todo_id)
+
   return (
     <div
       ref={setNodeRef}
@@ -40,9 +47,15 @@ export function ItemKanban(props: ItemProps) {
         {props.name}
       </p>
       <hr className='border-dashed border border-gray-40' />
-      <div className='grid grid-cols-[1fr_24px] gap-3 h-4 w-full'>
+      <div className='flex items-center gap-3 h-4 w-full'>
         <ProgressCount percentage={props.progress_percentage ?? 0} />
-        <Settings id={props.id} todo_id={props.todo_id} />
+        <Settings
+          id={props.id}
+          todo_id={props.todo_id}
+          toggleEdit={props.toggleEdit}
+          setActiveId={props.setActiveId}
+          handleEdit={handleEdit}
+        />
       </div>
     </div>
   )

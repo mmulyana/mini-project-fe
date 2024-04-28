@@ -4,16 +4,19 @@ import Dialog from '../dialog'
 import IMore from '../../icon/i-more'
 import useClickOutside from '../../../hooks/use-click-outside'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { updateItem } from '../kanban'
 import IArrowRight from '../../icon/i-arrow-right'
 import IArrowLeft from '../../icon/i-arrow-left'
 import IEdit from '../../icon/i-edit'
 import ITrash from '../../icon/i-trash'
 import { useQueryClient } from 'react-query'
+import { updateItem } from '../../../services/task'
 
 type Props = {
   id: UniqueIdentifier
   todo_id: number
+  toggleEdit: () => void
+  setActiveId: (val: UniqueIdentifier) => void
+  handleEdit: () => void
 }
 export default function Settings(props: Props) {
   const queryCache = useQueryClient()
@@ -48,7 +51,7 @@ export default function Settings(props: Props) {
         onClick={handleOpen}
       />
       <Dialog
-        className='py-1 bg-white w-[200px] shadow-dialog rounded-[4px] absolute top-[100%+24px]'
+        className='py-1 bg-white w-[200px] shadow-dialog rounded-[4px] absolute top-[100%+24px] z-10'
         isOpen={isOpen}
       >
         <Button
@@ -73,6 +76,11 @@ export default function Settings(props: Props) {
           className='gap-4 !text-neutral-90 w-full !shadow-none hover:!text-primary'
           variant='link'
           color='primary'
+          onClick={() => {
+            props.handleEdit()
+            props.setActiveId(props.id)
+            props.toggleEdit()
+          }}
         />
         <Button
           prepend={<ITrash stroke='currentColor' />}

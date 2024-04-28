@@ -14,3 +14,18 @@ export async function createGroup(title: string, description: string) {
     body: JSON.stringify(payload),
   })
 }
+
+export async function getGroups() {
+  const response = await fetch(BASE_URL + '/todos', {
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch data')
+  }
+
+  const data = await response.json()
+  return data
+}
