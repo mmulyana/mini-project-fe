@@ -67,7 +67,7 @@ export function GroupsKanban(props: GroupsProps) {
         groupVariant[props.variant],
       ].join(' ')}
     >
-      <Label title={props.title + ' ' + props.id} variant={props.variant} />
+      <Label title={props.title} variant={props.variant} />
       <p className='text-neutral-90 text-xs font-bold leading-5'>
         {props.description}
       </p>
