@@ -15,8 +15,8 @@ export default function ProgressCount(props: Props) {
           }}
         ></div>
       </div>
-      {props.percentage === 10 ? (
-        <div className='w-5 h-5 rounded-full bg-success'></div>
+      {props.percentage === 100 ? (
+        <div className='w-4 h-4 rounded-full bg-success'></div>
       ) : (
         <p className='text-xs text-neutral-70 m-0 leading-4'>
           {props.percentage + ' %'}
