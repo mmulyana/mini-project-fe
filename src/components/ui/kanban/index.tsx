@@ -15,6 +15,8 @@ import { useModal } from '../../../hooks/use-modal'
 import AddItemModal from '../modal/add-item-modal'
 import { useState } from 'react'
 import EditItemModal from '../modal/edit-item-modal'
+import DeleteItemModal from '../modal/delete-item-modal'
+import { useLocation } from 'react-router-dom'
 
 interface GroupI {
   id: UniqueIdentifier
@@ -25,8 +27,13 @@ interface GroupI {
 type VariantColor = 1 | 2 | 3 | 4
 
 export function Kanban() {
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+
   const { show, toggle } = useModal()
   const { show: showEdit, toggle: toggleEdit } = useModal()
+  
+  const showDelete = queryParams.get('id') ? true : false
 
   const [activeId, setActiveId] = useState<UniqueIdentifier>(0)
   const [activeGroupId, setActiveGroupId] = useState<UniqueIdentifier>(0)
@@ -83,7 +90,13 @@ export function Kanban() {
         </div>
       </DndContext>
       <AddItemModal isOpen={show} toggle={toggle} id={activeId} />
-      <EditItemModal isOpen={showEdit} toggle={toggleEdit} groupId={activeGroupId} id={activeId}/>
+      <EditItemModal
+        isOpen={showEdit}
+        toggle={toggleEdit}
+        groupId={activeGroupId}
+        id={activeId}
+      />
+      <DeleteItemModal isOpen={showDelete} />
     </>
   )
 }

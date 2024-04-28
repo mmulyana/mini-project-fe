@@ -17,6 +17,7 @@ type Props = {
   toggleEdit: () => void
   setActiveId: (val: UniqueIdentifier) => void
   handleEdit: () => void
+  handleDelete: () => void
 }
 export default function Settings(props: Props) {
   const queryCache = useQueryClient()
@@ -88,6 +89,7 @@ export default function Settings(props: Props) {
           className='gap-4 !text-neutral-90 w-full !shadow-none hover:!text-danger'
           variant='link'
           color='primary'
+          onClick={() => props.handleDelete()}
         />
       </Dialog>
     </div>

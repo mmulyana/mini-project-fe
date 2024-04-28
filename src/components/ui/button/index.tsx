@@ -34,7 +34,7 @@ export default function Button({
 
   const textVariant: ColorVariantI = {
     primary: 'text-white',
-    danger: 'text-white',
+    danger: 'text-white bg-danger',
     secondary: 'text-neutral-100',
   }
 

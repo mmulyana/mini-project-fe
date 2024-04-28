@@ -3,6 +3,7 @@ import ProgressCount from '../progress-count'
 import Settings from '../settings'
 import { CSS } from '@dnd-kit/utilities'
 import { UniqueIdentifier } from '@dnd-kit/core'
+import { useNavigate } from 'react-router-dom'
 
 export type ItemProps = {
   id: number
@@ -28,7 +29,12 @@ export function ItemKanban(props: ItemProps) {
       },
     })
 
+  const navigate = useNavigate()
+
   const handleEdit = () => props.setActiveGroupId(props.todo_id)
+  const handleDelete = () => {
+    navigate(`?id=${props.id}&group=${props.todo_id}`)
+  }
 
   return (
     <div
@@ -55,6 +61,7 @@ export function ItemKanban(props: ItemProps) {
           toggleEdit={props.toggleEdit}
           setActiveId={props.setActiveId}
           handleEdit={handleEdit}
+          handleDelete={handleDelete}
         />
       </div>
     </div>

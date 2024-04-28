@@ -73,3 +73,15 @@ export async function updateTask(
     body: JSON.stringify(body),
   })
 }
+export async function deleteTask(
+  item_id: string,
+  todo_id: string
+) {
+  return await fetch(`${BASE_URL}/todos/${todo_id}/items/${item_id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${TOKEN}`,
+    },
+  })
+}
