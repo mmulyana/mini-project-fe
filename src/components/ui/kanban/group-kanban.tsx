@@ -29,6 +29,8 @@ export type GroupsProps = {
   title: string
   description: string
   variant: 1 | 2 | 3 | 4
+  toggle: () => void
+  setActiveId: (val: UniqueIdentifier) => void
 }
 export type ItemProps = {
   id: number
@@ -83,7 +85,10 @@ export function GroupsKanban(props: GroupsProps) {
         className='!p-0 !shadow-none'
         prepend={<IPlusCircle />}
         type='submit'
-        onClick={() => alert('tes')}
+        onClick={() => {
+          props.setActiveId(props.id)
+          props.toggle()
+        }}
       />
     </div>
   )

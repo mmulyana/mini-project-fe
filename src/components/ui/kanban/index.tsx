@@ -9,6 +9,11 @@ import {
 } from '@dnd-kit/core'
 import { useQuery, useQueryClient } from 'react-query'
 import { GroupsKanban } from './group-kanban'
+import { getGroups } from '../../../services/group'
+import { updateItem } from '../../../services/task'
+import { useModal } from '../../../hooks/use-modal'
+import AddItemModal from '../modal/add-item-modal'
+import { useState } from 'react'
 
 interface GroupI {
   id: UniqueIdentifier
@@ -18,46 +23,9 @@ interface GroupI {
 
 type VariantColor = 1 | 2 | 3 | 4
 
-const getGroups = async () => {
-  const response = await fetch(
-    'https://todo-api-18-140-52-65.rakamin.com/todos',
-    {
-      headers: {
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1NTUsImV4cCI6MTcyMjg4NDk0Nn0.qbzETtVoPsE3SDY4yUMkgGyE4ED71B9fNsVy6n20rjQ`,
-      },
-    }
-  )
-
-  if (!response.ok) {
-    throw new Error('Failed to fetch data')
-  }
-
-  const data = await response.json()
-  return data
-}
-
-export const updateItem = async (
-  item_id: UniqueIdentifier,
-  todo_id: number,
-  target_id: UniqueIdentifier
-) => {
-  const body = {
-    target_todo_id: target_id,
-  }
-  return await fetch(
-    `https://todo-api-18-140-52-65.rakamin.com/todos/${todo_id}/items/${item_id}`,
-    {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1NTUsImV4cCI6MTcyMjg4NDk0Nn0.qbzETtVoPsE3SDY4yUMkgGyE4ED71B9fNsVy6n20rjQ`,
-      },
-      body: JSON.stringify(body),
-    }
-  )
-}
-
 export function Kanban() {
+  const { show, toggle } = useModal()
+  const [activeId, setActiveId] = useState<UniqueIdentifier>(0)
   const queryCache = useQueryClient()
   const { data } = useQuery<GroupI[]>({
     queryKey: ['groups'],
@@ -100,11 +68,14 @@ export function Kanban() {
                 title={d.title}
                 description={d.description}
                 variant={i >= 4 ? 1 : ((i + 1) as VariantColor)}
+                toggle={toggle}
+                setActiveId={setActiveId}
               />
             )
           })}
         </div>
       </DndContext>
+      <AddItemModal isOpen={show} toggle={toggle} id={activeId} />
     </>
   )
 }
