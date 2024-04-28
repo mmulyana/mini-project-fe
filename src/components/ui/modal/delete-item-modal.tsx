@@ -23,7 +23,7 @@ export default function DeleteItemModal(props: Props) {
 
     await deleteTask(id, groupId)
     queryCache.resetQueries()
-    navigate('/v1/home')
+    navigate('/v1')
   }
 
   if (!props.isOpen) return null
@@ -44,7 +44,7 @@ export default function DeleteItemModal(props: Props) {
           </div>
           <Button
             className='!p-0 h-6 w-6 flex items-center justify-center !bg-transparent !shadow-none'
-            onClick={() => navigate('/v1/home')}
+            onClick={() => navigate('/v1')}
             prepend={<IClose />}
             text=''
           />
@@ -61,7 +61,7 @@ export default function DeleteItemModal(props: Props) {
             variant='outline'
             color='secondary'
             type='button'
-            onClick={() => navigate('/v1/home')}
+            onClick={() => navigate('/v1')}
           />
           <Button
             type='button'
